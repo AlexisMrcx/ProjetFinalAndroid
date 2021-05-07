@@ -97,17 +97,26 @@ public class MainActivity extends AppCompatActivity {
                 for(QueryDocumentSnapshot doc : value){
                     Map<String, String> item = new HashMap<>();
                     String intitule = doc.getString("intitule");
+                    String reponse = doc.getString("reponse");
+                    String indicateur;
+
+                    if(reponse!=null){
+                        indicateur = "OK";
+                    } else {
+                        indicateur = "KO";
+                    }
 
                     item.put("First", intitule);
-                    item.put("Second", doc.getString("reponse"));
+                    item.put("Second", reponse);
+                    item.put("Third",indicateur);
                     dataQuestions.add(item);
                     listQuestions.add(new QuestionModel(intitule));
                 }
 
                 SimpleAdapter adapt = new SimpleAdapter(MainActivity.this, dataQuestions,
                         R.layout.item_list_view,
-                        new String[] {"First", "Second" },
-                        new int[] {R.id.line_a, R.id.line_b });
+                        new String[] {"First", "Second", "Third" },
+                        new int[] {R.id.line_a, R.id.line_b, R.id.indicateur });
 
                 questionsLstView.setAdapter(adapt);
             }
