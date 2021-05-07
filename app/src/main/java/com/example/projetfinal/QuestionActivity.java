@@ -28,10 +28,11 @@ public class QuestionActivity extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    Button btnValider, btnSupprimer;
+    Button btnValider, btnSupprimer, btnPicture;
     TextInputLayout champQ, champR;
-    ImageView viewImg;
     String idQuestion;
+
+    Bitmap image;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +43,14 @@ public class QuestionActivity extends AppCompatActivity {
         btnSupprimer=findViewById(R.id.btnSupprimer);
         champQ=findViewById(R.id.champQuestion);
         champR=findViewById(R.id.champReponse);
-        viewImg=findViewById(R.id.image_take);
+        btnPicture=findViewById(R.id.btnTakePicture);
 
         idQuestion=getIntent().getStringExtra("id");
 
         if(idQuestion != null){
             loadQuestion(idQuestion);
             champQ.setEnabled(false);
+            btnPicture.setVisibility(View.INVISIBLE);
         } else{
             champR.setEnabled(false);
             btnSupprimer.setVisibility(View.INVISIBLE);
@@ -84,7 +86,33 @@ public class QuestionActivity extends AppCompatActivity {
                 deleteQuestion(idQuestion);
             }
         });
+
+        btnPicture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                try {
+                    startActivityForResult(takePictureIntent, 1);
+                } catch (ActivityNotFoundException e) {
+                    Toast.makeText(getApplicationContext(),"Impossible de prendre une photo !",Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
     }
+
+    //Pour récupérer la photo prise
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            image = (Bitmap) extras.get("data");
+            //imageView.setImageBitmap(imageBitmap);
+            boolean b = false;
+        }
+    }
+
 
     private void sentReponse(String idQuestion) {
         db.collection("questions")
