@@ -14,8 +14,6 @@ public class QuestionModel {
         intitule=i;
     }
 
-
-
     public String getReponse() {
         return reponse;
     }
