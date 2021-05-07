@@ -1,9 +1,11 @@
 package com.example.projetfinal.models;
 
+import android.graphics.Bitmap;
+
 public class QuestionModel {
     String intitule;
     String reponse;
-
+    Bitmap image;
 
     public QuestionModel(){
     }
@@ -28,5 +30,13 @@ public class QuestionModel {
 
     public void setIntitule(String intitule) {
         this.intitule = intitule;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
     }
 }
